@@ -47,10 +47,16 @@ function getData(method, url, callback, object){
 function displayWinners(winners){
 	var mole = document.getElementById("mole");
 	var bodyDiv = document.getElementById("body");
+	var hScore = document.getElementById("score");
 	if(mole){
 		mole.parentNode.removeChild(mole);
 	}
+	if(hScore){
+		hScore.parentNode.removeChild(hScore);
+		score = 0;
+	}
 	var table = document.createElement("table");
+	table.setAttribute("id", "topScore");
 	var thr = document.createElement("tr");
 	var th1 = document.createElement("th");
 	th1.innerHTML = "Name";
@@ -73,17 +79,39 @@ function displayWinners(winners){
 }
 
 function playGame(){
+	var topScore = document.getElementById("topScore");
+	if(topScore){
+		topScore.parentNode.removeChild(topScore);
+	}
 	var mole = document.getElementById("mole");
-	var ul = document.getElementById("navbar");
-	var liScore = document.createElement("li");
-	var hScore = document.createElement("h2");
-	hScore.setAttribute("id","score");
-	hScore.innerHTML = score;
-	liScore.appendChild(hScore);
-	ul.appendChild(liScore);
-	mole.addEventListener("click",function(){
-		moveMole(mole);
-	});
+	if(mole){
+		var ul = document.getElementById("navbar");
+		var liScore = document.createElement("li");
+		var hScore = document.createElement("h2");
+		hScore.setAttribute("id","score");
+		hScore.innerHTML = score;
+		liScore.appendChild(hScore);
+		ul.appendChild(liScore);
+		mole.addEventListener("click",function(){
+			moveMole(mole);
+		});
+	}
+	else{
+		mole = document.createElement("div");
+		mole.setAttribute("id", "mole");
+		var ul = document.getElementById("navbar");
+		var liScore = document.createElement("li");
+		var hScore = document.createElement("h2");
+		hScore.setAttribute("id","score");
+		hScore.innerHTML = score;
+		liScore.appendChild(hScore);
+		ul.appendChild(liScore);
+		mole.addEventListener("click",function(){
+			moveMole(mole);
+		});
+		body.appendChild(mole);
+	}
+	
 }
 
 function moveMole(mole){
