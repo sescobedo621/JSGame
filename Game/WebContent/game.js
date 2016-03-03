@@ -13,9 +13,7 @@ window.onload = function(){
 function init(){
 	var play = document.getElementById("play");
 	var highScore = document.getElementById("highScores");
-	play.addEventListener("click", function(){
-		playGame();
-	});
+	play.addEventListener("click", playGame);
 
 	highScore.addEventListener("click", function(){
 		getHighScore();
@@ -47,6 +45,11 @@ function getData(method, url, callback, object){
 //gets the winners
 function displayWinners(winners){
 	clearBoard();
+	var play = document.getElementById("play");
+	var highScore = document.getElementById("highScores");
+	play.removeEventListener("click", playGame);
+	play.addEventListener("click", playGame);
+
 	var table = document.createElement("table");
 	table.setAttribute("id", "topScore");
 	var thr = document.createElement("tr");
@@ -71,17 +74,16 @@ function displayWinners(winners){
 }
 //starts game
 function playGame(){
+	var play = document.getElementById("play");
+	play.removeEventListener("click", playGame);
 	var topScore = document.getElementById("topScore");
-	startTimer();
-	if(topScore){
-		topScore.parentNode.removeChild(topScore);
-	}
 	score = 0;
 	var mole = document.getElementById("mole");
 	if(mole){
 		var ul = document.getElementById("navbar");
 		var liScore = document.createElement("li");
 		var hScore = document.createElement("h2");
+		startTimer();
 		hScore.setAttribute("id","score");
 		hScore.innerHTML = score;
 		liScore.appendChild(hScore);
@@ -95,6 +97,13 @@ function playGame(){
 		});
 	}
 	else{
+		var topScore = document.getElementById("topScore");
+
+		if(topScore){
+			topScore.parentNode.removeChild(topScore);
+		}
+		clearBoard();
+		startTimer();
 		mole = document.createElement("div");
 		mole.setAttribute("id", "mole");
 		mole.setAttribute("class", "mole");
@@ -123,13 +132,20 @@ function moveMole(mole){
 	var moleY = (Math.random() * (y - 375));
 	if(mole == document.getElementById("mole1")){
 		console.log("in if statement");
-		mole.style.marginLeft = moleY + "px"; 
+		mole.style.marginLeft = moleX + "px"; 
 		mole.style.marginTop =  moleY  + "px"; 
 	}
 	else{
-		console.log("in else statement");
+		if(document.getElementById("mole1")){
+			mole.style.marginLeft = moleX + "px"; 
+			mole.style.marginTop =  (Math.random() * (y - 550)) + "px"; 
+		}
+		else{
 		mole.style.marginLeft = moleX + "px"; 
-		mole.style.marginTop =  (Math.random() * (y - 475)) + "px"; 
+		mole.style.marginTop =  moleY  + "px"; 
+		}
+		console.log("in else statement");
+	
 	}
 	score += 50;
 	var hScore = document.getElementById("score");
@@ -160,28 +176,22 @@ function timeMoveMole(){
 
 	var mole = document.getElementById("mole");
 	moleTimer = setInterval(function(){
-			var moleX = (Math.random() * (x - 225));
-	var moleY = (Math.random() * (y - 450));
+	var moleX = (Math.random() * (x - 225));
+	var moleY = (Math.random() * (y - 500));
 	if(moleX < x && moleY){
-		console.log("in time if statement");
 		mole.style.marginLeft =  moleX + "px"; 
-		mole.style.marginTop =  (moleY) + "px"; 
-	}
-	else{
-		console.log("in time else statement");
-		mole.style.marginLeft = (x-425) + "px"; 
 		mole.style.marginTop =  (moleY) + "px"; 
 	}
 	}, 1000);
 }
 
 function addWinner(){
-	if(timerId){
-		window.clearInterval(timerId);
-		timerId = undefined;
-		var timer = document.getElementById("timer");
-		timer.parentNode.removeChild(timer);
-	}
+	window.clearInterval(timerId);
+	timerId = undefined;
+	var timer = document.getElementById("timer");
+	timer.parentNode.removeChild(timer);
+	var play = document.getElementById("play");
+	play.addEventListener("click", playGame);
 	var mole = document.getElementById("mole");
 	var mole1 = document.getElementById("mole1");
 	if(moleTimer){
@@ -213,7 +223,6 @@ function addWinner(){
 		winner.winnerName = winnerInput.value;
 		winner.score = score;
 		getData("PUT", "rest/addWinner", displayWinners, winner);
-		getHighScore();
 	})
 }
 
