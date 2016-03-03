@@ -3,13 +3,11 @@ var body = document.getElementById("body");
 var score = 0;
 var x = body.clientWidth;
 var y = body.clientHeight;
-
+//onload
 window.onload = function(){
 	init();
-	console.log(x);
-	console.log(y);
 }
-
+//initializes the app
 function init(){
 	var play = document.getElementById("play");
 	var highScore = document.getElementById("highScores");
@@ -21,11 +19,11 @@ function init(){
 		getHighScore();
 	});
 }
-
+//gets all the scores
 function getHighScore(){
 	getData("GET", "rest/winners",displayWinners);
 }
-
+//can get, put, post, and delete winners
 function getData(method, url, callback, object){
 	var xhr = new XMLHttpRequest();
 	xhr.open(method, url);
@@ -43,8 +41,13 @@ function getData(method, url, callback, object){
 		xhr.send(null);
 	}
 }
-
+//gets the winners
 function displayWinners(winners){
+	if(timerId){
+		window.clearInterval(timerId);
+		var timer = document.getElementById("timer");
+		timer.parentNode.removeChild(timer);
+	}
 	var mole = document.getElementById("mole");
 	var bodyDiv = document.getElementById("body");
 	var hScore = document.getElementById("score");
@@ -77,9 +80,10 @@ function displayWinners(winners){
 	}
 	bodyDiv.appendChild(table);
 }
-
+//starts game
 function playGame(){
 	var topScore = document.getElementById("topScore");
+	startTimer();
 	if(topScore){
 		topScore.parentNode.removeChild(topScore);
 	}
@@ -113,11 +117,31 @@ function playGame(){
 	}
 	
 }
-
+//moves the mole
 function moveMole(mole){
 	mole.style.marginLeft = (Math.random() * (x - 175)) + "px"; 
 	mole.style.marginTop= (Math.random() * (y - 125)) + "px"; 
 	score += 50;
 	var hScore = document.getElementById("score");
 	hScore.innerHTML = score;
+}
+//start the timer
+function startTimer(){
+	var ul = document.getElementById("navbar");
+		var liTimer = document.createElement("li");
+		var timer = document.createElement("h2");
+		timer.setAttribute("id", "timer");
+		timer.innerHTML=30;
+	timerId = setInterval(function(){
+			if(timer.innerHTML== 0){
+				getHighScore();
+
+			} 
+			else{
+				timer.innerHTML--;
+			}
+		liTimer.appendChild(timer);
+		ul.appendChild(liTimer);
+		
+	},1000);
 }
