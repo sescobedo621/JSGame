@@ -103,6 +103,8 @@ function playGame(){
 		timeMoveMole();
 		mole.addEventListener("click",function(){
 			moveMole(mole);
+			window.clearInterval(moleTimer);
+			timeMoveMole();
 		});
 	}
 	else{
@@ -115,18 +117,20 @@ function playGame(){
 		hScore.innerHTML = score;
 		liScore.appendChild(hScore);
 		ul.appendChild(liScore);
-		
-		mole.addEventListener("click",function(){
-			moveMole(mole);
-		});
 		body.appendChild(mole);
 		timeMoveMole();
+		mole.addEventListener("click",function(){
+			moveMole(mole);
+			window.clearInterval(moleTimer);
+			timeMoveMole();
+		});
+		
 	}
 	
 }
 //moves the mole
 function moveMole(mole){
-	mole.style.marginLeft = (Math.random() * (x - 175)) + "px"; 
+	mole.style.marginLeft = (Math.random() * (x - 225)) + "px"; 
 	mole.style.marginTop= (Math.random() * (y - 125)) + "px"; 
 	score += 50;
 	var hScore = document.getElementById("score");
@@ -156,7 +160,7 @@ function startTimer(){
 function timeMoveMole(){
 	var mole = document.getElementById("mole");
 	moleTimer = setInterval(function(){
-		mole.style.marginLeft = (Math.random() * (x - 175)) + "px"; 
+		mole.style.marginLeft = (Math.random() * (x - 225)) + "px"; 
 		mole.style.marginTop= (Math.random() * (y - 125)) + "px"; 
-	}, 1500);
+	}, 1000);
 }
