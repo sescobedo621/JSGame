@@ -225,7 +225,7 @@ function addWinner(){
 		getData("PUT", "rest/addWinner", displayWinners, winner);
 	})
 }
-
+//adds another mole
 function addMole(num){
 	console.log("in add mole");
 	var moleNum = "mole" + num;
@@ -239,7 +239,7 @@ function addMole(num){
 		});
 	}, 5000);
 }
-
+//clears board
 function clearBoard(){
 	var timer = document.getElementById("timer");
 		
