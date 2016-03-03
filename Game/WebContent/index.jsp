@@ -17,7 +17,7 @@
 </header>
 <div id="body" class="body">
 
-<div id="mole"></div>
+<div class="mole" id="mole"></div>
 <script type="text/javascript" src="game.js"></script>
 </div>
 </body>

@@ -39,5 +39,12 @@ public class GameDAO {
 		});
 		return winners;
 	}
+	public Boolean addWinner(Winner winner){
+		em.persist(winner);
+		if(em.contains(winner)){
+			return true;
+		}
+		return false;
+	}
 
 }
