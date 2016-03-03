@@ -1,4 +1,5 @@
 var timerId;
+var moleTimer;
 var body = document.getElementById("body");
 var score = 0;
 var x = body.clientWidth;
@@ -49,6 +50,9 @@ function displayWinners(winners){
 		timer.parentNode.removeChild(timer);
 	}
 	var mole = document.getElementById("mole");
+	if(moleTimer){
+		window.clearInterval(moleTimer);
+	}
 	var bodyDiv = document.getElementById("body");
 	var hScore = document.getElementById("score");
 	if(mole){
@@ -96,6 +100,7 @@ function playGame(){
 		hScore.innerHTML = score;
 		liScore.appendChild(hScore);
 		ul.appendChild(liScore);
+		timeMoveMole();
 		mole.addEventListener("click",function(){
 			moveMole(mole);
 		});
@@ -110,10 +115,12 @@ function playGame(){
 		hScore.innerHTML = score;
 		liScore.appendChild(hScore);
 		ul.appendChild(liScore);
+		
 		mole.addEventListener("click",function(){
 			moveMole(mole);
 		});
 		body.appendChild(mole);
+		timeMoveMole();
 	}
 	
 }
@@ -144,4 +151,12 @@ function startTimer(){
 		ul.appendChild(liTimer);
 		
 	},1000);
+}
+
+function timeMoveMole(){
+	var mole = document.getElementById("mole");
+	moleTimer = setInterval(function(){
+		mole.style.marginLeft = (Math.random() * (x - 175)) + "px"; 
+		mole.style.marginTop= (Math.random() * (y - 125)) + "px"; 
+	}, 1500);
 }
