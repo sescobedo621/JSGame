@@ -43,6 +43,7 @@ header li{
 .mole{
 	width: 200px;
 	height: 100px;
+	float: left;
 	background-image: url(http://www.animatedimages.org/data/media/212/animated-mole-image-0020.gif);
 	background-size: 200px;
 }

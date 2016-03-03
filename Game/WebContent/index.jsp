@@ -20,5 +20,6 @@
 <div class="mole" id="mole"></div>
 <script type="text/javascript" src="game.js"></script>
 </div>
+
 </body>
 </html>

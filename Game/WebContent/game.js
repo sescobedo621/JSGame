@@ -46,28 +46,7 @@ function getData(method, url, callback, object){
 }
 //gets the winners
 function displayWinners(winners){
-	if(timerId){
-		window.clearInterval(timerId);
-		var timer = document.getElementById("timer");
-		timer.parentNode.removeChild(timer);
-	}
-	var form = document.getElementById("winnerForm");
-	if(form){
-		form.parentNode.removeChild(form);
-	}
-	var mole = document.getElementById("mole");
-	if(moleTimer){
-		window.clearInterval(moleTimer);
-	}
-	var bodyDiv = document.getElementById("body");
-	var hScore = document.getElementById("score");
-	if(mole){
-		mole.parentNode.removeChild(mole);
-	}
-	if(hScore){
-		hScore.parentNode.removeChild(hScore);
-		score = 0;
-	}
+	clearBoard();
 	var table = document.createElement("table");
 	table.setAttribute("id", "topScore");
 	var thr = document.createElement("tr");
@@ -88,7 +67,7 @@ function displayWinners(winners){
 		tr.appendChild(td2);
 		table.appendChild(tr);
 	}
-	bodyDiv.appendChild(table);
+	body.appendChild(table);
 }
 //starts game
 function playGame(){
@@ -97,6 +76,7 @@ function playGame(){
 	if(topScore){
 		topScore.parentNode.removeChild(topScore);
 	}
+	score = 0;
 	var mole = document.getElementById("mole");
 	if(mole){
 		var ul = document.getElementById("navbar");
@@ -107,9 +87,9 @@ function playGame(){
 		liScore.appendChild(hScore);
 		ul.appendChild(liScore);
 		timeMoveMole();
+		addMole(1);
 		mole.addEventListener("click",function(){
 			moveMole(mole);
-			addMole(1);
 			window.clearInterval(moleTimer);
 			timeMoveMole();
 		});
@@ -127,6 +107,7 @@ function playGame(){
 		ul.appendChild(liScore);
 		body.appendChild(mole);
 		timeMoveMole();
+		addMole(1);
 		mole.addEventListener("click",function(){
 			moveMole(mole);
 			window.clearInterval(moleTimer);
@@ -138,8 +119,18 @@ function playGame(){
 }
 //moves the mole
 function moveMole(mole){
-	mole.style.marginLeft = (Math.random() * (x - 225)) + "px"; 
-	mole.style.marginTop= (Math.random() * (y - 125)) + "px"; 
+	var moleX = (Math.random() * (x - 225));
+	var moleY = (Math.random() * (y - 375));
+	if(mole == document.getElementById("mole1")){
+		console.log("in if statement");
+		mole.style.marginLeft = moleY + "px"; 
+		mole.style.marginTop =  moleY  + "px"; 
+	}
+	else{
+		console.log("in else statement");
+		mole.style.marginLeft = moleX + "px"; 
+		mole.style.marginTop =  (Math.random() * (y - 475)) + "px"; 
+	}
 	score += 50;
 	var hScore = document.getElementById("score");
 	hScore.innerHTML = score;
@@ -166,27 +157,42 @@ function startTimer(){
 }
 //moves mole after a certain point
 function timeMoveMole(){
+
 	var mole = document.getElementById("mole");
 	moleTimer = setInterval(function(){
-		mole.style.marginLeft = (Math.random() * (x - 225)) + "px"; 
-		mole.style.marginTop= (Math.random() * (y - 125)) + "px"; 
+			var moleX = (Math.random() * (x - 225));
+	var moleY = (Math.random() * (y - 450));
+	if(moleX < x && moleY){
+		console.log("in time if statement");
+		mole.style.marginLeft =  moleX + "px"; 
+		mole.style.marginTop =  (moleY) + "px"; 
+	}
+	else{
+		console.log("in time else statement");
+		mole.style.marginLeft = (x-425) + "px"; 
+		mole.style.marginTop =  (moleY) + "px"; 
+	}
 	}, 1000);
 }
 
 function addWinner(){
 	if(timerId){
 		window.clearInterval(timerId);
+		timerId = undefined;
 		var timer = document.getElementById("timer");
 		timer.parentNode.removeChild(timer);
 	}
 	var mole = document.getElementById("mole");
+	var mole1 = document.getElementById("mole1");
 	if(moleTimer){
 		window.clearInterval(moleTimer);
 	}
-	var bodyDiv = document.getElementById("body");
-	var hScore = document.getElementById("score");
+	
 	if(mole){
 		mole.parentNode.removeChild(mole);
+	}
+	if(mole1){
+		mole1.parentNode.removeChild(mole1);
 	}
 	var winnerForm = document.createElement("form");
 	winnerForm.setAttribute("id", "winnerForm");
@@ -206,20 +212,54 @@ function addWinner(){
 		var winner = {};
 		winner.winnerName = winnerInput.value;
 		winner.score = score;
-		getData("PUT", "rest/addWinner", undefined, winner);
+		getData("PUT", "rest/addWinner", displayWinners, winner);
 		getHighScore();
 	})
 }
 
 function addMole(num){
+	console.log("in add mole");
 	var moleNum = "mole" + num;
-	moleTimeout = setTimout(function(){
+	moleTimeout = setTimeout(function(){
 		var mole = document.createElement("div");
 		mole.setAttribute("class", "mole");
 		mole.setAttribute("id", moleNum);
 		body.appendChild(mole);
 		mole.addEventListener("click", function(){
-			moveMole();
+			moveMole(mole);
 		});
-	}, 1000);
+	}, 5000);
+}
+
+function clearBoard(){
+	var timer = document.getElementById("timer");
+		
+	if(timer){
+		window.clearInterval(timerId);
+		timerId = undefined;
+		timer.parentNode.removeChild(timer);
+	}
+
+	var form = document.getElementById("winnerForm");
+	if(form){
+		form.parentNode.removeChild(form);
+	}
+
+	var mole = document.getElementById("mole");
+	var mole1 = document.getElementById("mole1");
+	if(moleTimer){
+		window.clearInterval(moleTimer);
+	}
+	
+	if(mole){
+		mole.parentNode.removeChild(mole);
+	}
+	if(mole1){
+		mole1.parentNode.removeChild(mole1);
+	}
+	
+	var hScore = document.getElementById("score");
+	if(hScore){
+		hScore.parentNode.removeChild(hScore);
+	}
 }
