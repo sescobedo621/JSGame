@@ -1,5 +1,7 @@
 var timerId;
 var moleTimer;
+var moleTimer1;
+var moleTimer2;
 var moleTimout;
 var body = document.getElementById("body");
 var score = 0;
@@ -22,7 +24,7 @@ function init(){
 //gets all the scores
 function getHighScore(){
 	getData("GET", "rest/winners",displayWinners);
-}
+} 
 //can get, put, post, and delete winners
 function getData(method, url, callback, object){
 	var xhr = new XMLHttpRequest();
@@ -88,12 +90,11 @@ function playGame(){
 		hScore.innerHTML = score;
 		liScore.appendChild(hScore);
 		ul.appendChild(liScore);
-		timeMoveMole();
+		timeMoveMole(mole);
 		addMole(1);
 		mole.addEventListener("click",function(){
 			moveMole(mole);
-			window.clearInterval(moleTimer);
-			timeMoveMole();
+
 		});
 	}
 	else{
@@ -115,36 +116,42 @@ function playGame(){
 		liScore.appendChild(hScore);
 		ul.appendChild(liScore);
 		body.appendChild(mole);
-		timeMoveMole();
+		timeMoveMole(mole);
 		addMole(1);
 		mole.addEventListener("click",function(){
 			moveMole(mole);
-			window.clearInterval(moleTimer);
-			timeMoveMole();
 		});
 		
 	}
 	
 }
 //moves the mole
-function moveMole(mole){
-	var moleX = (Math.random() * (x - 225));
-	var moleY = (Math.random() * (y - 375));
+function moveMole(mole){	
+	var moleX = Math.floor(Math.random() * (x - 225));
+
+	var moleY = Math.floor(Math.random() * (y - 375));
+
 	if(mole == document.getElementById("mole1")){
-		console.log("in if statement");
 		mole.style.marginLeft = moleX + "px"; 
 		mole.style.marginTop =  moleY  + "px"; 
+	}else if(mole == document.getElementById("mole2")){
+
+		mole.style.marginLeft = moleX + "px"; 
 	}
 	else{
 		if(document.getElementById("mole1")){
-			mole.style.marginLeft = moleX + "px"; 
-			mole.style.marginTop =  (Math.random() * (y - 550)) + "px"; 
+			if(document.getElementById("mole2")){
+				mole.style.marginLeft = moleX + "px"; 
+				mole.style.marginTop =  Math.floor(Math.random() * (y - 500)) + "px"; 
+			}else{
+				mole.style.marginLeft = moleX + "px"; 
+				mole.style.marginTop =  Math.floor(Math.random() * (y - 500)) + "px"; 
+			}
 		}
 		else{
 		mole.style.marginLeft = moleX + "px"; 
 		mole.style.marginTop =  moleY  + "px"; 
 		}
-		console.log("in else statement");
 	
 	}
 	score += 50;
@@ -164,6 +171,9 @@ function startTimer(){
 
 			} 
 			else{
+				if(timer.innerHTML == 25){
+					addMole(2);
+				}
 				timer.innerHTML--;
 			}
 		liTimer.appendChild(timer);
@@ -172,12 +182,11 @@ function startTimer(){
 	},1000);
 }
 //moves mole after a certain point
-function timeMoveMole(){
+function timeMoveMole(mole){
 
-	var mole = document.getElementById("mole");
 	moleTimer = setInterval(function(){
-	var moleX = (Math.random() * (x - 225));
-	var moleY = (Math.random() * (y - 500));
+	var moleX = Math.floor(Math.random() * (x - 225));
+	var moleY = Math.floor(Math.random() * (y - 500));
 	if(moleX < x && moleY){
 		mole.style.marginLeft =  moleX + "px"; 
 		mole.style.marginTop =  (moleY) + "px"; 
@@ -222,7 +231,8 @@ function addWinner(){
 		var winner = {};
 		winner.winnerName = winnerInput.value;
 		winner.score = score;
-		getData("PUT", "rest/addWinner", displayWinners, winner);
+		getData("PUT", "rest/addWinner", undefined, winner);
+		getHighScore();
 	})
 }
 //adds another mole
@@ -233,6 +243,7 @@ function addMole(num){
 		var mole = document.createElement("div");
 		mole.setAttribute("class", "mole");
 		mole.setAttribute("id", moleNum);
+		mole.innerHTML = moleNum;
 		body.appendChild(mole);
 		mole.addEventListener("click", function(){
 			moveMole(mole);
