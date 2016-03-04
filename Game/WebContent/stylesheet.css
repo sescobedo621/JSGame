@@ -39,11 +39,16 @@ header li{
 	padding-top:15px;
 	padding-bottom: 15px;
 	background-color: #5aff5a;
+	cursor: url(img/mallet.gif),auto; 
+
+}
+#body:active{
+	cursor: url(img/mallet2.gif),auto;
 }
 .mole{
 	width: 200px;
 	height: 100px;
 	float: left;
-	background-image: url(http://www.animatedimages.org/data/media/212/animated-mole-image-0020.gif);
+	background-image: url(img/mole.gif);
 	background-size: 200px;
 }

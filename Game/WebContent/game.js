@@ -37,7 +37,7 @@ function getData(method, url, callback, object){
 			}
 		}
 	}
-	if(object){
+	if(object){ 
 		xhr.send(JSON.stringify(object));
 	}
 	else{
@@ -51,7 +51,10 @@ function displayWinners(winners){
 	var highScore = document.getElementById("highScores");
 	play.removeEventListener("click", playGame);
 	play.addEventListener("click", playGame);
-
+	var winnersNum =winners.length;
+	if (winners.length > 10){
+		winnersNum = 10;
+	}
 	var table = document.createElement("table");
 	table.setAttribute("id", "topScore");
 	var thr = document.createElement("tr");
@@ -62,7 +65,7 @@ function displayWinners(winners){
 	th2.innerHTML = "Score";
 	thr.appendChild(th2);
 	table.appendChild(thr);
-	for(var i = 0; i<winners.length; i++){
+	for(var i = 0; i<winnersNum; i++){
 		var tr = document.createElement("tr");
 		var td1 = document.createElement("td");
 		td1.innerHTML = winners[i].winnerName;
@@ -133,19 +136,24 @@ function moveMole(mole){
 
 	if(mole == document.getElementById("mole1")){
 		mole.style.marginLeft = moleX + "px"; 
-		mole.style.marginTop =  moleY  + "px"; 
+		if(document.getElementById("mole2")){
+			mole.style.marginRight = Math.floor(Math.random() * (y - 500)) + "px";
+		}else{
+			mole.style.marginTop =  moleY  + "px"; 
+		}
 	}else if(mole == document.getElementById("mole2")){
 
 		mole.style.marginLeft = moleX + "px"; 
+		//mole.style.marginTop = moleY + "px";
 	}
 	else{
 		if(document.getElementById("mole1")){
 			if(document.getElementById("mole2")){
 				mole.style.marginLeft = moleX + "px"; 
-				mole.style.marginTop =  Math.floor(Math.random() * (y - 500)) + "px"; 
+				mole.style.marginTop =  Math.floor(Math.random() * (y - 700)) + "px"; 
 			}else{
 				mole.style.marginLeft = moleX + "px"; 
-				mole.style.marginTop =  Math.floor(Math.random() * (y - 500)) + "px"; 
+				mole.style.marginTop =  Math.floor(Math.random() * (y - 550)) + "px"; 
 			}
 		}
 		else{
@@ -203,6 +211,7 @@ function addWinner(){
 	play.addEventListener("click", playGame);
 	var mole = document.getElementById("mole");
 	var mole1 = document.getElementById("mole1");
+	var mole2 = document.getElementById("mole2");
 	if(moleTimer){
 		window.clearInterval(moleTimer);
 	}
@@ -212,6 +221,9 @@ function addWinner(){
 	}
 	if(mole1){
 		mole1.parentNode.removeChild(mole1);
+	}
+	if(mole2){
+		mole2.parentNode.removeChild(mole2);
 	}
 	var winnerForm = document.createElement("form");
 	winnerForm.setAttribute("id", "winnerForm");
@@ -231,8 +243,7 @@ function addWinner(){
 		var winner = {};
 		winner.winnerName = winnerInput.value;
 		winner.score = score;
-		getData("PUT", "rest/addWinner", undefined, winner);
-		getHighScore();
+		getData("PUT", "rest/addWinner", getHighScore, winner);
 	})
 }
 //adds another mole
@@ -243,12 +254,11 @@ function addMole(num){
 		var mole = document.createElement("div");
 		mole.setAttribute("class", "mole");
 		mole.setAttribute("id", moleNum);
-		mole.innerHTML = moleNum;
 		body.appendChild(mole);
 		mole.addEventListener("click", function(){
 			moveMole(mole);
 		});
-	}, 5000);
+	}, 10000);
 }
 //clears board
 function clearBoard(){
@@ -267,6 +277,7 @@ function clearBoard(){
 
 	var mole = document.getElementById("mole");
 	var mole1 = document.getElementById("mole1");
+	var mole2 = document.getElementById("mole2");
 	if(moleTimer){
 		window.clearInterval(moleTimer);
 	}
@@ -277,9 +288,15 @@ function clearBoard(){
 	if(mole1){
 		mole1.parentNode.removeChild(mole1);
 	}
-	
+	if(mole2){
+		mole2.parentNode.removeChild(mole2);
+	}
 	var hScore = document.getElementById("score");
 	if(hScore){
 		hScore.parentNode.removeChild(hScore);
 	}
+	var topScore = document.getElementById("topScore");
+	if(topScore){
+			topScore.parentNode.removeChild(topScore);
+		}
 }
