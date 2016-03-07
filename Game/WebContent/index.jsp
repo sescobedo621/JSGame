@@ -10,11 +10,12 @@
 <body>
 <header>
 <ul id= "navbar">
-<li><h1>Whack-A-Mole</h1></li>
-<li><h2 id="play">Play</h2></li>
-<li><h2 id="highScores">High Scores</h2></li>
+<li class="navbar"><h1>Whack-A-Mole</h1></li>
+<li class="navbar"><h2 id="play">Play</h2></li>
+<li class="navbar"><h2 id="highScores">High Scores</h2></li>
 </ul>
 </header>
+
 <div id="body" class="body">
 
 <div class="mole" id="mole"></div>

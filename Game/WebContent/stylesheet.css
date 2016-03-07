@@ -1,10 +1,12 @@
 header{
-	background-color: #18e5c1;
-	color: #022E4E;
+	background-color: #7fc7fd;
+	color: #e5f3fe;
 	width: 100%;
 	height: 80px;
 	text-decoration: none;
 	margin:0px;
+	cursor: default;
+
 }
 header ul{
 	list-style-type: none;
@@ -27,8 +29,11 @@ header li{
 	font-size: 20px;
 	font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
 }
+.navbar h2:hover{
+	color: #3f637e;
+}
 body{
-	background-color: #fbfbfb;
+	background-color: #def6f6;
 	font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
 }
 #body{
@@ -64,13 +69,13 @@ form input[type="submit"]{
 	margin-left: 15px;
 	padding: 5px; 
     background-color: #022E4E;
-    color: #fcfeb2;
+    color: #e5f3fe;
     border: 0;
     border-radius: 5px;
 }
 form input[type="submit"]:hover{
-	background-color: #3b22ab;
-	color:#fcfeb2;
+	background-color: #7fc7fd;
+	color:#3f637e;
 }
 form input[type="text"]{
 	font-size: 16px;
@@ -80,17 +85,17 @@ form input[type="text"]{
 }
 table{
 	width: 50%;
+	margin-top: 5%;
+	margin-left: 24%;
 	color: #7D7D7D;
 	font-size: 24px;
 }
 th{
-	text-align: left;
-	text-indent: 15px;
+	text-align: center;
 	font-weight: bolder;
 	text-decoration: underline;
 
 }
 td {
 	text-align: left;
-	text-indent: 15px;
 }
