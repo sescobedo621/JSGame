@@ -1,6 +1,6 @@
 <html>
 <body>
-<h1>To Do List</h1>
+<h1>Whack-A-Mole</h1>
 <h3>Objective</h3>
 <p>To create a game with JavaScript. The high scores persist to a database through Java with RESTFUL API</p>
 <ul>
